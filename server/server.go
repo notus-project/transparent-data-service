@@ -563,7 +563,7 @@ func (server *Server) RequestCommitmentsAndProofs(prefix []byte) []byte {
 	proofs := make([]*bulletproofs.ProofBPRP, 0)
 	params, err := bulletproofs.SetupGeneric(0, BP_MAX)
 	util.Check(err)
-
+	startingTime := time.Now().UTC()
 	for i := 0; i < n; i++ {
 		momentCommitments := make([]*p256.P256, 0)
 		for j := 0; j < len(vals[0]); j++ {
@@ -590,6 +590,8 @@ func (server *Server) RequestCommitmentsAndProofs(prefix []byte) []byte {
 	output := NewCommitmentsAndProofs(commitments, idHashes, proofs)
 	outputBytes, err := json.Marshal(output)
 	util.Check(err)
+	duration := time.Now().UTC().Sub(startingTime)
+	fmt.Printf("Running PedCommitment tree generation and Range proof generation Takes [%.3f] Seconds \n", duration.Seconds())
 	return outputBytes
 }
 
