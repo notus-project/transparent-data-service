@@ -701,7 +701,7 @@ func main() {
 	nUsers6, nDistricts6 := getExperimentRange(100, 5000000, 12, 10, 1000, 3)
 	// n. users: 100, 187, 351, 657, 1232, 2310, 4328, 8111, 15199, 28480, 53366, 100000,
 	// n. districts: 10, 100,
-	nUsers7, nDistricts7 := getExperimentRange(100, 100000, 12, 10, 100, 2) //
+	nUsers7, nDistricts7 := getExperimentRange(1000, 1000, 1, 10, 10, 1) //
 	nEpochs1 := 100
 	nEpochs2 := 500
 	nEpochs3 := 100
@@ -710,7 +710,7 @@ func main() {
 	nEpochs6 := 1
 	nEpochs7 := 1
 	nSamples6 := -1
-	nSamples7 := 3
+	nSamples7 := 1
 
 	remote := flag.Bool("remote", false, "run remote server")
 	serverURL := flag.String("url", "http://localhost:9045", "remote server url")
