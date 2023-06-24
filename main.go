@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"log"
 	"math"
@@ -13,6 +14,7 @@ import (
 
 	"github.com/tap-group/tdsvc/auditor"
 	"github.com/tap-group/tdsvc/client"
+	"github.com/tap-group/tdsvc/network"
 	pkg_server "github.com/tap-group/tdsvc/server"
 	"github.com/tap-group/tdsvc/tables"
 	"github.com/tap-group/tdsvc/util"
@@ -693,7 +695,7 @@ func runExperiment7(nEpochs int, nUsers, nDistricts []int, nSamples int) {
 }
 
 func main() {
-	nUsers := 1024
+	nUsers := 1000
 	fmt.Println("nUsers = ", nUsers)
 	// n. users: 100, 267, 715, 1912, 5113, 13673, 36565, 97780, 261476, 699216, 1869781, 5000000,
 	// n. districts: 10, 21, 46, 100, 215, 464, 1000,
@@ -701,7 +703,7 @@ func main() {
 	// n. users: 100, 187, 351, 657, 1232, 2310, 4328, 8111, 15199, 28480, 53366, 100000,
 	// n. districts: 10, 100,
 	nUsers7, nDistricts7 := getExperimentRange(nUsers, nUsers, 1, 1, 1, 1) //
-	runExperiment7(1, nUsers7, nDistricts7, 1)
+
 	// nEpochs1 := 100
 	// nEpochs2 := 500
 	// nEpochs3 := 100
@@ -712,9 +714,9 @@ func main() {
 	// nSamples6 := -1
 	// nSamples7 := 1
 
-	// remote := flag.Bool("remote", false, "run remote server")
-	// serverURL := flag.String("url", "http://localhost:9045", "remote server url")
-	// createTablesFlag := flag.Bool("create", false, "create new table")
+	remote := flag.Bool("remote", false, "run remote server")
+	serverURL := flag.String("url", "http://localhost:9045", "remote server url")
+	createTablesFlag := flag.Bool("create", false, "create new table")
 	// performExperiment1Flag := flag.Bool("experiment1", false, "perform experiment 1")
 	// performExperiment1aFlag := flag.Bool("experiment1a", false, "perform experiment 1a")
 	// performExperiment1bFlag := flag.Bool("experiment1b", false, "perform experiment 1b")
@@ -738,18 +740,15 @@ func main() {
 	// performExperiment6Flag := flag.Bool("experiment6", false, "perform experiment 6")
 	// performExperiment7Flag := flag.Bool("experiment7", false, "perform experiment 7")
 	// performExperimentsFlag := flag.Bool("experiments", false, "perform all experiments")
-	// numUsersFlag := flag.Int("nu", -1, "number of users")
-	// numDistrictsFlag := flag.Int("nd", -1, "number of districts/subtrees")
-	// numSamplesFlag := flag.Int("ns", -1, "number of samples")
-	// flag.Parse()
+	flag.Parse()
 
-	// if *remote {
-	// 	server = network.NewRemoteServer(*serverURL)
-	// 	factory = network.NewRemoteFactory(server.(*network.RemoteServer))
-	// } else {
-	// 	server = new(pkg_server.Server)
-	// 	factory = new(tables.TableFactory)
-	// }
+	if *remote {
+		server = network.NewRemoteServer(*serverURL)
+		factory = network.NewRemoteFactory(server.(*network.RemoteServer))
+	} else {
+		server = new(pkg_server.Server)
+		factory = new(tables.TableFactory)
+	}
 
 	// if *numUsersFlag > -1 {
 	// 	nUsers = *numUsersFlag
@@ -766,13 +765,14 @@ func main() {
 	// 	nSamples6 = *numSamplesFlag
 	// }
 
-	// if *createTablesFlag {
-	// 	fmt.Printf("creating table\n")
-	// 	factory.CreateTableWithRandomMissing("input/table1.txt")
-	// 	factory.CreateExample2Table("input/table_example2.txt")
-	// 	fmt.Printf("done\n")
-	// 	return
-	// }
+	if *createTablesFlag {
+		fmt.Printf("creating table\n")
+		factory.CreateTableWithRandomMissing("input/table1.txt")
+		factory.CreateExample2Table("input/table_example2.txt")
+		fmt.Printf("done\n")
+		return
+	}
+	runExperiment7(1, nUsers7, nDistricts7, 1)
 
 	// if *performExperiment1Flag {
 	// 	runExperiment1a(nEpochs1, nUsers, 1)
