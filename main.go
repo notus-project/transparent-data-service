@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"encoding/csv"
-	"flag"
 	"fmt"
 	"log"
 	"math"
@@ -14,7 +13,6 @@ import (
 
 	"github.com/tap-group/tdsvc/auditor"
 	"github.com/tap-group/tdsvc/client"
-	"github.com/tap-group/tdsvc/network"
 	pkg_server "github.com/tap-group/tdsvc/server"
 	"github.com/tap-group/tdsvc/tables"
 	"github.com/tap-group/tdsvc/util"
@@ -695,201 +693,203 @@ func runExperiment7(nEpochs int, nUsers, nDistricts []int, nSamples int) {
 }
 
 func main() {
-	nUsers := 100
+	nUsers := 1024
+	fmt.Println("nUsers = ", nUsers)
 	// n. users: 100, 267, 715, 1912, 5113, 13673, 36565, 97780, 261476, 699216, 1869781, 5000000,
 	// n. districts: 10, 21, 46, 100, 215, 464, 1000,
-	nUsers6, nDistricts6 := getExperimentRange(100, 5000000, 12, 10, 1000, 3)
+	//nUsers6, nDistricts6 := getExperimentRange(100, 5000000, 12, 10, 1000, 3)
 	// n. users: 100, 187, 351, 657, 1232, 2310, 4328, 8111, 15199, 28480, 53366, 100000,
 	// n. districts: 10, 100,
-	nUsers7, nDistricts7 := getExperimentRange(1024, 1024, 1, 1, 1, 1) //
-	nEpochs1 := 100
-	nEpochs2 := 500
-	nEpochs3 := 100
-	nEpochs4 := 10
-	nEpochs5 := 1
-	nEpochs6 := 1
-	nEpochs7 := 1
-	nSamples6 := -1
-	nSamples7 := 1
+	nUsers7, nDistricts7 := getExperimentRange(nUsers, nUsers, 1, 1, 1, 1) //
+	runExperiment7(1, nUsers7, nDistricts7, 1)
+	// nEpochs1 := 100
+	// nEpochs2 := 500
+	// nEpochs3 := 100
+	// nEpochs4 := 10
+	// nEpochs5 := 1
+	// nEpochs6 := 1
+	// nEpochs7 := 1
+	// nSamples6 := -1
+	// nSamples7 := 1
 
-	remote := flag.Bool("remote", false, "run remote server")
-	serverURL := flag.String("url", "http://localhost:9045", "remote server url")
-	createTablesFlag := flag.Bool("create", false, "create new table")
-	performExperiment1Flag := flag.Bool("experiment1", false, "perform experiment 1")
-	performExperiment1aFlag := flag.Bool("experiment1a", false, "perform experiment 1a")
-	performExperiment1bFlag := flag.Bool("experiment1b", false, "perform experiment 1b")
-	performExperiment1cFlag := flag.Bool("experiment1c", false, "perform experiment 1c")
-	performExperiment2Flag := flag.Bool("experiment2", false, "perform experiment 2")
-	performExperiment2aFlag := flag.Bool("experiment2a", false, "perform experiment 2a")
-	performExperiment2bFlag := flag.Bool("experiment2b", false, "perform experiment 2b")
-	performExperiment2cFlag := flag.Bool("experiment2c", false, "perform experiment 2c")
-	performExperiment2dFlag := flag.Bool("experiment2d", false, "perform experiment 2d")
-	performExperiment3Flag := flag.Bool("experiment3", false, "perform experiment 3")
-	performExperiment3aFlag := flag.Bool("experiment3a", false, "perform experiment 3a")
-	performExperiment3bFlag := flag.Bool("experiment3b", false, "perform experiment 3b")
-	performExperiment3cFlag := flag.Bool("experiment3c", false, "perform experiment 3c")
-	performExperiment3dFlag := flag.Bool("experiment3d", false, "perform experiment 3d")
-	performExperiment3eFlag := flag.Bool("experiment3e", false, "perform experiment 3e")
-	performExperiment3fFlag := flag.Bool("experiment3f", false, "perform experiment 3f")
-	performExperiment3gFlag := flag.Bool("experiment3g", false, "perform experiment 3g")
-	performExperiment3hFlag := flag.Bool("experiment3h", false, "perform experiment 3h")
-	performExperiment4Flag := flag.Bool("experiment4", false, "perform experiment 4")
-	performExperiment5Flag := flag.Bool("experiment5", false, "perform experiment 5")
-	performExperiment6Flag := flag.Bool("experiment6", false, "perform experiment 6")
-	performExperiment7Flag := flag.Bool("experiment7", false, "perform experiment 7")
-	performExperimentsFlag := flag.Bool("experiments", false, "perform all experiments")
-	numUsersFlag := flag.Int("nu", -1, "number of users")
-	numDistrictsFlag := flag.Int("nd", -1, "number of districts/subtrees")
-	numSamplesFlag := flag.Int("ns", -1, "number of samples")
-	flag.Parse()
+	// remote := flag.Bool("remote", false, "run remote server")
+	// serverURL := flag.String("url", "http://localhost:9045", "remote server url")
+	// createTablesFlag := flag.Bool("create", false, "create new table")
+	// performExperiment1Flag := flag.Bool("experiment1", false, "perform experiment 1")
+	// performExperiment1aFlag := flag.Bool("experiment1a", false, "perform experiment 1a")
+	// performExperiment1bFlag := flag.Bool("experiment1b", false, "perform experiment 1b")
+	// performExperiment1cFlag := flag.Bool("experiment1c", false, "perform experiment 1c")
+	// performExperiment2Flag := flag.Bool("experiment2", false, "perform experiment 2")
+	// performExperiment2aFlag := flag.Bool("experiment2a", false, "perform experiment 2a")
+	// performExperiment2bFlag := flag.Bool("experiment2b", false, "perform experiment 2b")
+	// performExperiment2cFlag := flag.Bool("experiment2c", false, "perform experiment 2c")
+	// performExperiment2dFlag := flag.Bool("experiment2d", false, "perform experiment 2d")
+	// performExperiment3Flag := flag.Bool("experiment3", false, "perform experiment 3")
+	// performExperiment3aFlag := flag.Bool("experiment3a", false, "perform experiment 3a")
+	// performExperiment3bFlag := flag.Bool("experiment3b", false, "perform experiment 3b")
+	// performExperiment3cFlag := flag.Bool("experiment3c", false, "perform experiment 3c")
+	// performExperiment3dFlag := flag.Bool("experiment3d", false, "perform experiment 3d")
+	// performExperiment3eFlag := flag.Bool("experiment3e", false, "perform experiment 3e")
+	// performExperiment3fFlag := flag.Bool("experiment3f", false, "perform experiment 3f")
+	// performExperiment3gFlag := flag.Bool("experiment3g", false, "perform experiment 3g")
+	// performExperiment3hFlag := flag.Bool("experiment3h", false, "perform experiment 3h")
+	// performExperiment4Flag := flag.Bool("experiment4", false, "perform experiment 4")
+	// performExperiment5Flag := flag.Bool("experiment5", false, "perform experiment 5")
+	// performExperiment6Flag := flag.Bool("experiment6", false, "perform experiment 6")
+	// performExperiment7Flag := flag.Bool("experiment7", false, "perform experiment 7")
+	// performExperimentsFlag := flag.Bool("experiments", false, "perform all experiments")
+	// numUsersFlag := flag.Int("nu", -1, "number of users")
+	// numDistrictsFlag := flag.Int("nd", -1, "number of districts/subtrees")
+	// numSamplesFlag := flag.Int("ns", -1, "number of samples")
+	// flag.Parse()
 
-	if *remote {
-		server = network.NewRemoteServer(*serverURL)
-		factory = network.NewRemoteFactory(server.(*network.RemoteServer))
-	} else {
-		server = new(pkg_server.Server)
-		factory = new(tables.TableFactory)
-	}
+	// if *remote {
+	// 	server = network.NewRemoteServer(*serverURL)
+	// 	factory = network.NewRemoteFactory(server.(*network.RemoteServer))
+	// } else {
+	// 	server = new(pkg_server.Server)
+	// 	factory = new(tables.TableFactory)
+	// }
 
-	if *numUsersFlag > -1 {
-		nUsers = *numUsersFlag
-		nUsers6 = []int{*numUsersFlag}
-		nUsers7 = []int{*numUsersFlag}
-	}
+	// if *numUsersFlag > -1 {
+	// 	nUsers = *numUsersFlag
+	// 	nUsers6 = []int{*numUsersFlag}
+	// 	nUsers7 = []int{*numUsersFlag}
+	// }
 
-	if *numDistrictsFlag > -1 {
-		nDistricts6 = []int{*numDistrictsFlag}
-		nDistricts7 = []int{*numDistrictsFlag}
-	}
+	// if *numDistrictsFlag > -1 {
+	// 	nDistricts6 = []int{*numDistrictsFlag}
+	// 	nDistricts7 = []int{*numDistrictsFlag}
+	// }
 
-	if *numSamplesFlag > -1 {
-		nSamples6 = *numSamplesFlag
-	}
+	// if *numSamplesFlag > -1 {
+	// 	nSamples6 = *numSamplesFlag
+	// }
 
-	if *createTablesFlag {
-		fmt.Printf("creating table\n")
-		factory.CreateTableWithRandomMissing("input/table1.txt")
-		factory.CreateExample2Table("input/table_example2.txt")
-		fmt.Printf("done\n")
-		return
-	}
+	// if *createTablesFlag {
+	// 	fmt.Printf("creating table\n")
+	// 	factory.CreateTableWithRandomMissing("input/table1.txt")
+	// 	factory.CreateExample2Table("input/table_example2.txt")
+	// 	fmt.Printf("done\n")
+	// 	return
+	// }
 
-	if *performExperiment1Flag {
-		runExperiment1a(nEpochs1, nUsers, 1)
-		runExperiment1b(nEpochs1, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment1c(nEpochs1, nUsers, nUsers)
-	}
+	// if *performExperiment1Flag {
+	// 	runExperiment1a(nEpochs1, nUsers, 1)
+	// 	runExperiment1b(nEpochs1, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment1c(nEpochs1, nUsers, nUsers)
+	// }
 
-	if *performExperiment1aFlag {
-		runExperiment1a(nEpochs1, nUsers, 1)
-	}
+	// if *performExperiment1aFlag {
+	// 	runExperiment1a(nEpochs1, nUsers, 1)
+	// }
 
-	if *performExperiment1bFlag {
-		runExperiment1b(nEpochs1, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment1bFlag {
+	// 	runExperiment1b(nEpochs1, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment1cFlag {
-		runExperiment1c(nEpochs1, nUsers, nUsers)
-	}
+	// if *performExperiment1cFlag {
+	// 	runExperiment1c(nEpochs1, nUsers, nUsers)
+	// }
 
-	if *performExperiment2Flag {
-		runExperiment2a(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment2b(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment2c(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment2d(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment2Flag {
+	// 	runExperiment2a(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment2b(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment2c(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment2d(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment2aFlag {
-		runExperiment2a(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment2aFlag {
+	// 	runExperiment2a(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment2bFlag {
-		runExperiment2b(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment2bFlag {
+	// 	runExperiment2b(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment2cFlag {
-		runExperiment2c(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment2cFlag {
+	// 	runExperiment2c(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment2dFlag {
-		runExperiment2d(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
-	if *performExperiment3Flag {
-		runExperiment3a(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment3b(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment3c(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment3d(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment3e(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment3f(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment3g(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment3h(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment2dFlag {
+	// 	runExperiment2d(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
+	// if *performExperiment3Flag {
+	// 	runExperiment3a(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment3b(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment3c(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment3d(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment3e(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment3f(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment3g(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment3h(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment3aFlag {
-		runExperiment3a(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment3aFlag {
+	// 	runExperiment3a(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment3bFlag {
-		runExperiment3b(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment3bFlag {
+	// 	runExperiment3b(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment3cFlag {
-		runExperiment3c(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment3cFlag {
+	// 	runExperiment3c(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment3dFlag {
-		runExperiment3d(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment3dFlag {
+	// 	runExperiment3d(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment3eFlag {
-		runExperiment3e(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment3eFlag {
+	// 	runExperiment3e(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment3fFlag {
-		runExperiment3f(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment3fFlag {
+	// 	runExperiment3f(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment3gFlag {
-		runExperiment3g(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment3gFlag {
+	// 	runExperiment3g(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment3hFlag {
-		runExperiment3h(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment3hFlag {
+	// 	runExperiment3h(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment4Flag {
-		runExperiment4(nEpochs4, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment4Flag {
+	// 	runExperiment4(nEpochs4, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment5Flag {
-		runExperiment5(nEpochs5, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperiment5Flag {
+	// 	runExperiment5(nEpochs5, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 
-	if *performExperiment6Flag {
-		runExperiment6(nEpochs6, nUsers6, nDistricts6, nSamples6)
-	}
+	// if *performExperiment6Flag {
+	// 	runExperiment6(nEpochs6, nUsers6, nDistricts6, nSamples6)
+	// }
 
-	if *performExperiment7Flag {
-		runExperiment7(nEpochs7, nUsers7, nDistricts7, nSamples7)
-	}
+	// if *performExperiment7Flag {
+	// 	runExperiment7(nEpochs7, nUsers7, nDistricts7, nSamples7)
+	// }
 
-	if *performExperimentsFlag {
-		runExperiment1a(nEpochs1, nUsers, 1)
-		runExperiment1b(nEpochs1, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment1c(nEpochs1, nUsers, nUsers)
-		runExperiment2a(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment2b(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment2c(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment2d(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment3a(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment3b(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment3c(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment3d(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment3e(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment3f(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment3g(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment3h(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment4(nEpochs4, nUsers, int(math.Sqrt(float64(nUsers))))
-		runExperiment5(nEpochs5, nUsers, int(math.Sqrt(float64(nUsers))))
-	}
+	// if *performExperimentsFlag {
+	// 	runExperiment1a(nEpochs1, nUsers, 1)
+	// 	runExperiment1b(nEpochs1, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment1c(nEpochs1, nUsers, nUsers)
+	// 	runExperiment2a(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment2b(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment2c(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment2d(nEpochs2, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment3a(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment3b(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment3c(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment3d(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment3e(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment3f(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment3g(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment3h(nEpochs3, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment4(nEpochs4, nUsers, int(math.Sqrt(float64(nUsers))))
+	// 	runExperiment5(nEpochs5, nUsers, int(math.Sqrt(float64(nUsers))))
+	// }
 }
